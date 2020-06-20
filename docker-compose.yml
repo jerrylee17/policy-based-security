@@ -1,0 +1,20 @@
+version: "3"
+services:
+    policy_manager:
+        build:
+            dockerfile: Dockerfile
+            context: ./policy_manager_service
+        volumes:
+            - /policy_manager_app/node_modules
+            - ./policy_manager_service:/policy_manager_app
+        ports:
+            - "5000:5000"
+    nginx:
+        depends_on:
+            - policy_manager
+        restart: always
+        build:
+            dockerfile: Dockerfile
+            context: ./nginx
+        ports:
+            - "8080:80"
