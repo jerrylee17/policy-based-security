@@ -1,9 +1,15 @@
 const cluster = require('cluster');
 const express = require('express');
 const keys = require('./config/keys');
+const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
 const cors = require('cors');
 
+// mongodb setup
+mongoose.Promise = global.Promise;
+mongoose.connect(keys.mongoURI,  { useNewUrlParser: true })
+.then(()=> console.log("mongodb connect success"))
+.catch(err => console.log(err));
 if (cluster.isMaster) {
     cluster.fork();
     cluster.fork();

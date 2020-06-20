@@ -1,12 +1,26 @@
 version: "3"
 services:
+    mongo:
+        image: "mongo"
+        restart: always
+        ports:
+          - "27017:27017"
     policy_manager:
+        depends_on:
+            - mongo
         build:
             dockerfile: Dockerfile
             context: ./policy_manager_service
         volumes:
             - /policy_manager_app/node_modules
             - ./policy_manager_service:/policy_manager_app
+        environment:
+            - MONGODB_HOST=mongodb
+            - MONGODB_PORT=37017
+            - MONGODB_USER=root
+            - MONGODB_PASS=password123
+        links:
+            - mongo
         ports:
             - "5000:5000"
     nginx:
