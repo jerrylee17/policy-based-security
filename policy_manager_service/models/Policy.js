@@ -1,8 +1,13 @@
-const Mongoose = require('mongoose')
-const { Schema } = Mongoose
-const policySchema = new Schema({
-    name: String,
-    permission: String
-})
+const mongoose = require('mongoose');
+const { Schema } = mongoose;
+const Device = require('./Device')
 
-Mongoose.model('Policy', policySchema)
+const policySchema = new Schema({
+    device: { type: Schema.Types.ObjectId, ref: Device },
+    policies: {
+        type: Map,
+        of: String
+    }
+});
+
+mongoose.model('Policy', policySchema);

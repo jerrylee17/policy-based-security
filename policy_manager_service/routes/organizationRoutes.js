@@ -1,23 +1,29 @@
+const axios = require('axios');
 const mongoose = require('mongoose')
 const Organization = mongoose.model('Organization')
-const request = require('request')
 
 module.exports = (app) => {
-  app.post('/policy-manager/organization',
-    async (req, res) => {
-      const newOrganization = new Organization({
-        name: req.body.name,
-        token: req.body.token
-      })
-      await Organization.create(newOrganization, (err, entry) => {
-        if (err) {
-          console.log(err)
-          return res.status(400)
-        }
-        console.log(`Success: ${entry}`)
-        return res.json(entry)
-      })
-    })
+
+    app.post('/policy-manager/organization', async (req, res) => {
+        const { name } = req.body;
+        let header ={
+                    headers: {
+                    'X-Vault-Token': 's.J6cvIW0E5DaMJaRtvZVHTTvk',
+                    'Content-Type': 'application/x-www-form-urlencoded'
+                }
+            }
+        await axios.get(`http://13.58.96.116:8200/v1/secret/data/${name}`, header).then(async response=>{
+            let organization_token = response.data.data.data["org1"];
+            let org = new Organization({ name, organization_token});
+            try {
+                await org.save();
+                res.status(200).send(org);
+            } catch (err) {
+                res.send(400).send(err);
+            }
+        });
+    });
+
   app.get('/policy-manager/organization',
     async (req, res) => {
       const {
@@ -37,25 +43,3 @@ module.exports = (app) => {
     }
   )
 }
-
-
-
-
-
-      // let { name } = req.body
-      // const options = {
-      //   uri: 'http://13.58.96.116',
-      //   port: '8200',
-      //   path: `/v1/secret/data/${name}`,
-      //   method: 'GET',
-      //   headers: {
-      //     'Content-Type': 'application/json',
-      //     'X-Vault-Token': 's.J6cvIW0E5DaMJaRtvZVHTTvk'
-      //   }
-      // }
-      // await request.get('https://13.58.96.116',
-      //   (err, resp, body) => {
-      //     console.log(`error: ${err}`)
-      //     console.log(`response: ${resp}`)
-      //     let responseBody = JSON.parse(body)
-      //     console.log(`responsebody: ${responseBody}`)

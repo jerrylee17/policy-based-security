@@ -4,7 +4,7 @@ const Organization = require('./Organization')
 
 const deviceSchema = new Schema({
     name: String,
-    token: String,
+    device_token: String,
     organization: {
         type: Schema.Types.ObjectId,
         ref: Organization

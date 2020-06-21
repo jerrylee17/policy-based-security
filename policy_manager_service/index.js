@@ -7,6 +7,7 @@ const cors = require('cors');
 // import models
 require('./models/Organization');
 require('./models/Device');
+require('./models/Policy');
 
 // mongodb setup
 mongoose.Promise = global.Promise;
@@ -26,6 +27,7 @@ if (cluster.isMaster) {
   // import routes
   require('./routes/organizationRoutes')(app);
   require('./routes/deviceRoutes')(app);
+  require('./routes/policyRoutes')(app);
 
   const PORT = keys.PORT || 5000;
   app.listen(PORT, () => {
