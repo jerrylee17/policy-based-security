@@ -1,13 +1,14 @@
 const Mongoose = require('mongoose')
 const { Schema } = Mongoose
+const Organization = require('./Organization')
+
 const deviceSchema = new Schema({
     name: String,
-    tokens: [
-        {
-            type: Schema.Types.ObjectId,
-            ref: Token
-        }
-    ]
+    token: String,
+    organization: {
+        type: Schema.Types.ObjectId,
+        ref: Organization
+    }
 })
 
-Mongoose.model('Device', deviceSchema)
+module.exports = Mongoose.model('Device', deviceSchema)
