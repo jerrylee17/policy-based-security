@@ -1,4 +1,3 @@
-from __future__ import print_function
 import requests
 import json
 import cv2
@@ -17,6 +16,3 @@ _, img_encoded = cv2.imencode('.jpg', img)
 response = requests.post(test_url, data=img_encoded.tostring(), headers=headers)
 # decode response
 print(json.loads(response.text))
-
-# expected output: {u'message': u'image received. size=124x124'}
-
