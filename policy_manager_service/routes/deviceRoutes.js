@@ -15,7 +15,7 @@ module.exports = (app) => {
             'X-Vault-Token': 's.J6cvIW0E5DaMJaRtvZVHTTvk',
             'Content-Type': 'application/x-www-form-urlencoded'}
         }
-        await axios.get(`http://13.58.96.116:8200/v1/secret/data/${req.body.organization}`, header).then(async response=>{
+        await axios.get(`http://18.191.255.3:8200/v1/secret/data/${req.body.organization}`, header).then(async response=>{
             let vault_organization_token = response.data.data.data["org1"];
             if (organization_token == vault_organization_token) {
                 let device = new Device({

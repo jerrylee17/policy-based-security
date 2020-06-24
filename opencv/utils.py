@@ -1,8 +1,30 @@
+import time
 import requests
-from requests.adapters import HTTPAdapter
 from urllib3 import Retry
+from functools import wraps
+from requests.adapters import HTTPAdapter
 
 
+def timeit(func):
+        """
+        time the given function
+
+        :param func: function name
+        :return:  wrapper for given function
+        """
+        @wraps(func)
+        def wrapper(*args, **kwargs):
+            'wrapper'
+            start = time.time()
+            result = func(*args, **kwargs)
+            stop = time.time()
+            total_time = '%.3f' % (stop - start)
+            msg = ('{} has taken {}s'.format(func.__name__, total_time))
+            print(msg)
+            return result
+        return wrapper
+
+@timeit
 def _requests_retry(url, method, **kwargs):
     """Method for request retry"""
     retries = Retry(total=5, backoff_factor=1)

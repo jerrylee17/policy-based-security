@@ -12,7 +12,7 @@ module.exports = (app) => {
                     'Content-Type': 'application/x-www-form-urlencoded'
                 }
             }
-        await axios.get(`http://13.58.96.116:8200/v1/secret/data/${name}`, header).then(async response=>{
+        await axios.get(`http://18.191.255.3:8200/v1/secret/data/${name}`, header).then(async response=>{
             let organization_token = response.data.data.data["org1"];
             let org = new Organization({ name, organization_token});
             try {
